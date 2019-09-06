@@ -15,10 +15,10 @@ dependencies {
     implementation "org.apache.commons:commons-lang3:3.9"
     implementation "org.apache.commons:commons-collections4:4.1"
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
-    compileOnly 'org.projectlombok:lombok:1.18.2'
-    compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.4.1.Final'
+    implementation 'org.projectlombok:lombok:1.18.2'
+    implementation 'org.hibernate:hibernate-validator:5.4.1.Final'
+    implementation 'com.github.krraghavan:xeger:1.0.0-RELEASE'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.2'
-    testCompileOnly 'org.projectlombok:lombok:1.18.2'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testImplementation "pl.pragmatists:JunitParams:1.1.0"
+    testImplementation 'org.projectlombok:lombok:1.18.2'
+    testImplementation 'junit:junit:4.12'
 }

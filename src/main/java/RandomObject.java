@@ -6,33 +6,28 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.RandomUtils;
-import org.hibernate.validator.constraints.Length;
-
 /**
  * @author yanming
  */
 public class RandomObject {
-    public static <T> T random(Class<T> cl)
-        throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    public static <T> T random(Class<T> cl) throws InvocationTargetException, IllegalAccessException,
+        InstantiationException, ClassNotFoundException, NoSuchMethodException {
         Field[] fields = cl.getDeclaredFields();
-        Map<String, Object> randomContent = new ConcurrentHashMap<>(fields.length);
+        Map<String, Object> randomContentMap = new ConcurrentHashMap<>(fields.length);
         for (Field field : fields) {
             if (field.getClass().isAssignableFrom(Collection.class)) {
-                randomContent.put(field.getName(), field.getClass().newInstance());
+                randomContentMap.put(field.getName(), field.getClass().newInstance());
             } else {
                 Annotation[] annotations = field.getDeclaredAnnotations();
                 for (Annotation annotation : annotations) {
-                    Class<? extends Annotation> annotationType = annotation.annotationType();
-                    if (annotationType == Length.class) {
-                        Length length = (Length)annotation;
-                        int len = RandomUtils.nextInt(length.min(), length.max());
-                        randomContent.put(field.getName(), RandomStringUtils.random(len));
-                        break;
-                    }
-                }
+                    String annotationName = annotation.annotationType().getName();
+                    String[] splitNames = annotationName.split("\\.");
+                    Class RandomContentClass =
+                        Class.forName("validation." + splitNames[splitNames.length - 1] + "RandomContentImpl");
+                    Method method = RandomContentClass.getMethod("getRandomContent", Annotation.class);
 
+                    randomContentMap.put(field.getName(), method.invoke(RandomContentClass.newInstance(), annotation));
+                }
             }
         }
         T entity = cl.newInstance();
@@ -40,8 +35,7 @@ public class RandomObject {
         for (Method method : methods) {
             if ("set".equals(method.getName().substring(0, 3))) {
                 String fieldName = method.getName().substring(3, 4).toLowerCase() + method.getName().substring(4);
-                method.invoke(
-                    randomContent.containsKey(fieldName) ? randomContent.get(fieldName) : RandomStringUtils.random(10));
+                method.invoke(entity, randomContentMap.get(fieldName));
             }
         }
         return entity;
