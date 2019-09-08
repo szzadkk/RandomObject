@@ -1,3 +1,5 @@
+import javax.validation.constraints.Pattern;
+
 import org.hibernate.validator.constraints.Length;
 import org.junit.After;
 import org.junit.Assert;
@@ -23,16 +25,32 @@ public class RandomObjectTest {
 
     @Test
     public void shouldGenerateTestLimitLength() throws Exception {
-        TestDTO testDTO = RandomObject.random(TestDTO.class);
-        Assert.assertTrue(testDTO.getTest().length() <= 10);
+        LengthDTO lengthDTO = RandomObject.random(LengthDTO.class);
+        Assert.assertTrue(lengthDTO.getTest().length() <= 10);
+    }
+
+    @Test
+    public void shouldGeneratePattern() throws Exception {
+        PatternDTO patternDTO = RandomObject.random(PatternDTO.class);
+        Assert.assertTrue(java.util.regex.Pattern.matches("\\d{10}", patternDTO.getTest()));
+
     }
 
     @NoArgsConstructor
     @AllArgsConstructor
     @Data
     @Builder
-    public static class TestDTO {
+    public static class LengthDTO {
         @Length(max = 10, message = "字段长度不能超过10")
-        String test;
+        private String test;
+    }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Data
+    @Builder
+    public static class PatternDTO {
+        @Pattern(regexp = "\\d{10}")
+        private String test;
     }
 }

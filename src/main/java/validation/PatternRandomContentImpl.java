@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 
 import javax.validation.constraints.Pattern;
 
-import nl.flotsam.xeger.Xeger;
+import com.mifmif.common.regex.Generex;
 
 /**
  * @author yanming
@@ -14,7 +14,7 @@ public class PatternRandomContentImpl implements RandomContent {
     @Override
     public Object getRandomContent(Annotation annotation) {
         Pattern pattern = (Pattern)annotation;
-        Xeger generator = new Xeger(pattern.regexp());
-        return generator.generate();
+        Generex generator = new Generex(pattern.regexp());
+        return generator.random();
     }
 }

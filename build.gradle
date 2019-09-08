@@ -16,8 +16,8 @@ dependencies {
     implementation "org.apache.commons:commons-collections4:4.1"
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
     implementation 'org.projectlombok:lombok:1.18.2'
+    implementation 'com.github.mifmif:generex:1.0.2'
     implementation 'org.hibernate:hibernate-validator:5.4.1.Final'
-    implementation 'com.github.krraghavan:xeger:1.0.0-RELEASE'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.2'
     testImplementation 'org.projectlombok:lombok:1.18.2'
     testImplementation 'junit:junit:4.12'
