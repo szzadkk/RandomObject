@@ -1,3 +1,4 @@
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
@@ -36,6 +37,13 @@ public class RandomObjectTest {
 
     }
 
+    @Test
+    public void shouldGenerateDigits() throws Exception {
+        DigitsDTO digitsDTO = RandomObject.random(DigitsDTO.class);
+        Assert.assertTrue(java.util.regex.Pattern.matches("\\d{1,10}\\.\\d{1,10}", digitsDTO.getTest()));
+
+    }
+
     @NoArgsConstructor
     @AllArgsConstructor
     @Data
@@ -51,6 +59,15 @@ public class RandomObjectTest {
     @Builder
     public static class PatternDTO {
         @Pattern(regexp = "\\d{10}")
+        private String test;
+    }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Data
+    @Builder
+    public static class DigitsDTO {
+        @Digits(integer = 10, fraction = 10)
         private String test;
     }
 }

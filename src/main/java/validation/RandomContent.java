@@ -12,6 +12,7 @@ public interface RandomContent {
      * 
      * @param annotation
      *            注解
+     *
      * @return 随机生成的对象
      */
     Object getRandomContent(Annotation annotation);
